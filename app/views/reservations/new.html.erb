@@ -1,0 +1,75 @@
+<div class="container mx-auto px-4 py-8">
+  <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-6">
+    
+    <h1 class="text-2xl font-bold mb-6">Подтверждение бронирования</h1>
+    
+    <div class="relative" data-controller="gallery">
+      <div class="relative h-64 overflow-hidden rounded-lg">
+        <% if @room.photos.attached? %>
+          <% @room.photos.each_with_index do |photo, index| %>
+            <%= image_tag photo.variant(resize_to_limit: [800, 600]), 
+                        class: "absolute inset-0 w-full h-full object-cover transition-opacity duration-300 #{'hidden' if index != 0}",
+                        data: { gallery_target: "image" } %>
+          <% end %>
+        
+         <%= button_tag class: "btn absolute left-0 top-0 h-full w-1/4 flex items-center justify-center opacity-0 group-hover:opacity-75 transition-opacity z-10",
+                          data: { action: "click->gallery#previous"} do %>
+              <svg class="w-12 h-12 text-white bg-black/30 rounded-full p-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+              </svg>
+            <% end %>
+            <%= button_tag class: "btn absolute right-0 top-0 h-full w-1/4 flex items-center justify-center opacity-0 group-hover:opacity-75 transition-opacity z-10",
+                          data: { action: "click->gallery#next"} do %>
+              <svg class="w-12 h-12 text-white bg-black/30 rounded-full p-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+              </svg>
+            <% end %>
+
+          <% else %>
+            <div class="w-full h-48 bg-gray-200"></div>
+          <% end %>
+      </div>
+    </div>
+
+    <div class="mb-8">
+      <h2 class="text-lg font-semibold"><%= @room.room_type %></h2>
+      <p class="text-gray-600"><%= @room.hotel.name %></p>
+      <div class="mt-4 grid grid-cols-2 gap-4">
+        <div>
+          <p class="font-medium">Дата заезда:</p>
+          <p><%= l(@check_in, format: :long) %></p>
+        </div>
+        <div>
+          <p class="font-medium">Дата выезда:</p>
+          <p><%= l(@check_out, format: :long) %></p>
+        </div>
+        <div>
+          <p class="font-medium">Ночей:</p>
+          <p><%= (@check_out - @check_in).to_i %></p>
+        </div>
+        <div>
+          <p class="font-medium">Стоимость:</p>
+          <p class="text-xl font-bold text-blue-600">
+            <%= number_to_currency(@total_price, unit: "₽") %>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <%= form_with model: @reservation, url: reservations_path do |f| %>
+      <%= f.hidden_field :room_id, value: @room.id %>
+      <%= f.hidden_field :check_in, value: @check_in %>
+      <%= f.hidden_field :check_out, value: @check_out %>
+      <%= f.hidden_field :guests %>
+
+      <div class="mb-4">
+        <%= f.label :guests, "Количество гостей", class: "block font-medium mb-2" %>
+        <%= f.select :guests, 1..@room.capacity, {}, class: "input-field w-full" %>
+      </div>
+
+      <div class="mt-6">
+        <%= f.submit "Подтвердить бронь", class: "btn-primary w-full" %>
+      </div>
+    <% end %>
+  </div>
+</div>

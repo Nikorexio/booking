@@ -1,0 +1,20 @@
+<div class="max-w-md mx-auto bg-white p-6 rounded-lg shadow">
+  <h2 class="text-xl font-bold mb-4">Оплата бронирования</h2>
+  
+  <div data-controller="stripe" 
+       data-stripe-public-key="<%= Rails.application.credentials.stripe[:public_key] %>"
+       data-stripe-client-secret="<%= @reservation.payment_intent.client_secret %>">
+       
+    <div id="card-element" data-stripe-target="card" class="mb-4"></div>
+    <button data-action="click->stripe#handlePayment" 
+            data-stripe-target="submit" 
+            class="btn-primary w-full">
+      Оплатить <%= number_to_currency(@reservation.total_price, unit: "₽") %>
+    </button>
+  </div>
+</div>
+
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+  const stripe = Stripe('<%= Rails.application.credentials.stripe[:public_key] %>');
+</script>

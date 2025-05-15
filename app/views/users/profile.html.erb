@@ -1,0 +1,59 @@
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-2xl font-bold mb-8">Личный кабинет</h1>
+
+  <div class="grid md:grid-cols-2 gap-8">
+    <!-- Бронирования -->
+    <div>
+      <h2 class="text-xl font-semibold mb-4">Мои бронирования</h2>
+      <% @reservations.each do |reservation| %>
+        <div class="bg-white rounded-lg shadow-md p-4 mb-4 <%= 'opacity-50' if reservation.canceled? %>">
+          <div class="flex justify-between items-start">
+            <div class="flex-1">
+              <h3 class="font-medium"><%= reservation.room.hotel.name %></h3>
+              <p class="text-gray-600 text-sm">
+                <%= reservation.room.room_type %> • 
+                <%= l(reservation.check_in, format: :short) %> – 
+                <%= l(reservation.check_out, format: :short) %>
+              </p>
+              <% if reservation.canceled? %>
+                <span class="text-red-600 text-sm">Отменено</span>
+              <% else %>
+                <span class="text-green-600 text-sm">Подтверждено</span>
+              <% end %>
+            </div>
+            <div class="flex flex-col items-end">
+              <span class="text-blue-600 font-medium">
+                <%= number_to_currency(reservation.total_price, unit: "₽") %>
+              </span>
+              <% unless reservation.canceled? %>
+                <%= button_to "Отменить", 
+                            reservation_path(reservation), 
+                            method: :delete,
+                            class: "mt-2 text-red-600 hover:text-red-700 text-sm",
+                            data: { turbo_confirm: "Отменить бронь?" } %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Отзывы -->
+    <div>
+      <h2 class="text-xl font-semibold mb-4">Мои отзывы</h2>
+      <% @reviews.each do |review| %>
+        <div class="bg-white rounded-lg shadow-md p-4 mb-4">
+          <div class="flex items-center mb-2">
+            <div class="text-yellow-500">
+              <% review.rating.times do %>★<% end %>
+            </div>
+            <span class="ml-2 font-medium">
+              <%= review.hotel.name %>
+            </span>
+          </div>
+          <p class="text-gray-600"><%= review.comment %></p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
