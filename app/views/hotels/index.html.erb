@@ -1,68 +1,49 @@
 <div class="container mx-auto px-4 py-8">
   <div class="bg-white rounded-xl shadow-md p-6 mb-8">
-    <%= search_form_for @q, url: search_hotels_path,
+    <%= search_form_for @q, url: hotels_path,
                       html: { class: "space-y-4" } do |f| %>
       <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-        
-        <div class="col-span-full">
-          <%= f.search_field :name_cont, 
-                          placeholder: "Поиск по названию отеля",
-                          class: "input-field w-full" %>
-        </div>
-
-        <div>
-          <%= f.label :city_id_eq, "Город", class: "block text-sm font-medium text-gray-700 mb-1" %>
-          <%= f.collection_select :city_id_eq, 
-                City.order(:name), 
-                :id, :name, 
-                { 
-                  include_blank: "Все города",
-                  selected: params.dig(:q, :city_id_eq)
-                }, 
-                class: "input-field w-full" %>
-        </div>
-
-        <div>
-          <%= f.label :rooms_room_type_eq, "Тип номера", class: "filter-label" %>
-          <%= f.select :rooms_room_type_eq,
-                Room.distinct.pluck(:room_type).compact.sort.map { |t| [t.humanize, t] },
-                { include_blank: "Любой тип" }, class: "input-field" %>
-        </div>
-        
-        <div>
-          <%= f.label :rooms_price_gteq, "Цена за ночь", class: "filter-label" %>
-          <div class="flex gap-2">
-            <%= f.number_field :rooms_price_gteq, placeholder: "От", class: "input-field" %>
-            <%= f.number_field :rooms_price_lteq, placeholder: "До", class: "input-field" %>
+          <div class="col-span-full">
+            <%= f.search_field :name_cont, 
+                            placeholder: "Поиск по названию отеля",
+                            class: "input-field w-full" %>
           </div>
-        </div>
 
-        <div>
-          <%= f.label :rating_gteq, "Рейтинг отеля", class: "filter-label" %>
-          <div class="flex items-center gap-2">
-            <%= f.select :rating_gteq, 
-                  options_for_select([['Любой', nil]] + (1..5).map { |n| ["★ #{n}+", n] }), 
-                  {}, class: "input-field" %>
+          <div>
+            <%= f.label :city_id_eq, "Город", class: "block text-sm font-medium text-gray-700 mb-1" %>
+            <%= f.collection_select :city_id_eq, 
+                  City.order(:name), 
+                  :id, :name, 
+                  { 
+                    include_blank: "Все города",
+                    selected: params.dig(:q, :city_id_eq)
+                  }, 
+                  class: "input-field w-full" %>
           </div>
-        </div>
 
-        <%# <div class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4"> %>
-    
-          <%# <div class="col-span-full md:col-span-2">
-            <fieldset class="space-y-2">
-              <legend class="filter-label">Удобства в номерах</legend>
-              <div class="flex flex-wrap gap-4">
-                <%= f.check_box :rooms_wifi_eq, class: "checkbox" %>
-                <%# <%= f.label :rooms_wifi_eq, "Wi-Fi", class: "checkbox-label" %>
+          <div>
+            <%= f.label :rooms_room_type_eq, "Тип номера", class: "filter-label" %>
+            <%= f.select :rooms_room_type_eq,
+                  Room.distinct.pluck(:room_type).compact.sort.map { |t| [t.humanize, t] },
+                  { include_blank: "Любой тип" }, class: "input-field" %>
+          </div>
+        
+          <div>
+            <%= f.label :rooms_price_gteq, "Цена за ночь", class: "filter-label" %>
+            <div class="flex gap-2">
+              <%= f.number_field :rooms_price_gteq, placeholder: "От", class: "input-field" %>
+              <%= f.number_field :rooms_price_lteq, placeholder: "До", class: "input-field" %>
+            </div>
+          </div>
 
-                <%# <%= f.check_box :rooms_tv_eq, class: "checkbox" %>
-                <%# <%= f.label :rooms_tv_eq, "Телевизор", class: "checkbox-label" %>
-
-                <%# <%= f.check_box :rooms_air_conditioning_eq, class: "checkbox" %>
-                <%# <%= f.label :rooms_air_conditioning_eq, "Кондиционер", class: "checkbox-label" %>
-              <%# </div>
-            </fieldset>
-          </div> %>
+          <div>
+            <%= f.label :rating_gteq, "Рейтинг отеля", class: "filter-label" %>
+            <div class="flex items-center gap-2">
+              <%= f.select :rating_gteq, 
+                    options_for_select([['Любой', nil]] + (1..5).map { |n| ["★ #{n}+", n] }), 
+                    {}, class: "input-field" %>
+            </div>
+          </div>
 
           <div>
             <%= f.label :rooms_capacity_gteq, "Гостей", class: "filter-label" %>
@@ -70,14 +51,14 @@
                   options_for_select([1,2,3,4,5].map { |n| ["#{n}+", n] }), 
                   { include_blank: "Любое" }, class: "input-field" %>
           </div>
+
         </div>
 
-      <%# </div> %>
-      <div class="mt-6 flex justify-between items-center">
-        <%= f.submit "Найти", class: "btn-primary" %>
-        <%= link_to "Сбросить", hotels_path, class: "text-gray-600 hover:text-blue-600" %>
-      </div>
-    <% end %>
+        <div class="mt-6 flex justify-between items-center">
+          <%= f.submit "Найти", class: "btn-primary" %>
+          <%= link_to "Сбросить", hotels_path, class: "text-gray-600 hover:text-blue-600" %>
+        </div>
+      <% end %>
   </div>
 
   <!-- Список отелей -->
