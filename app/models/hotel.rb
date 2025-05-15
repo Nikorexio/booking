@@ -30,6 +30,7 @@ class Hotel < ApplicationRecord
     ["city", "rooms", "reviews"] + super
   end
 
-  validates :name, :address, presence: true
+  validates :name, presence: true, length: { maximum: 100 }
+  validates :description, length: { maximum: 1000 }, allow_blank: true
   scope :by_city, ->(city_id) { where(city_id: city_id) if city_id.present? }
 end

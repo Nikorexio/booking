@@ -28,7 +28,6 @@
                 Room.distinct.pluck(:room_type).compact.sort.map { |t| [t.humanize, t] },
                 { include_blank: "Любой тип" }, class: "input-field" %>
         </div>
-        <%# # Room.room_types.map { |k,v| [k.humanize, v] },  %>
         
         <div>
           <%= f.label :rooms_price_gteq, "Цена за ночь", class: "filter-label" %>

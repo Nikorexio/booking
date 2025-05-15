@@ -3,7 +3,11 @@ class Room < ApplicationRecord
   has_many :reservations, dependent: :destroy
   has_many_attached :photos
 
-  validates :number, :room_type, :price, :capacity, presence: true
+  validates :number, presence: true,
+                    length: { maximum: 20 }
+  validates :room_type, presence: true,
+                    length: { maximum: 50 }
+  validates :price, :capacity, presence: true
   validates :price, numericality: { greater_than: 0 }
 
   scope :available_between, ->(start_date, end_date) {

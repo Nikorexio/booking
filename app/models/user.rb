@@ -5,4 +5,5 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
   has_many :reservations, dependent: :destroy
   has_many :reviews, dependent: :destroy
+  validates :email, length: { maximum: 150 }
 end

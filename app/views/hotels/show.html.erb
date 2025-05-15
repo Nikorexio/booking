@@ -117,29 +117,35 @@
       <h2 class="text-2xl font-bold mb-6">Отзывы</h2>
 
       <% if user_signed_in? %>
-        <!-- Форма отзыва -->
+      <!-- Форма отзыва -->
         <div class="bg-gray-50 p-6 rounded-lg shadow-inner mb-8">
           <h3 class="text-lg font-semibold mb-4">Оставить отзыв</h3>
           <br>
-          <%= form_with model: [@hotel, @review], 
-                      class: "space-y-4" do |f| %>
+
+          <%= form_with model: [@hotel, @review], class: "space-y-4" do |f| %>
             <div class="grid grid-cols-2 gap-4">
+
               <div class="col-span-2 md:col-span-1">
-                <%= f.label :rating, "Оценка", 
-                          class: "block text-sm font-medium text-gray-700" %>
-                <%= f.select :rating, (1..5).to_a, {}, 
-                            class: "input-field w-full" %>
+                <%= f.label :rating, "Оценка", class: "block text-sm font-medium text-gray-700" %>
+                <%= f.select :rating, (1..5).to_a, {}, class: "input-field w-full" %>
               </div>
-              <div class="col-span-2">
-                <%= f.label :comment, "Комментарий", 
-                          class: "block text-sm font-medium text-gray-700" %>
+
+              <div class="col-span-2" data-controller="textarea-counter">
+                <%= f.label :comment, "Комментарий", class: "block text-sm font-medium text-gray-700" %>
+
                 <%= f.text_area :comment, 
-                              rows: 3,
+                              maxlength: 500,
                               class: "input-field w-full" %>
+
+                <small class="text-gray-500">
+                  Осталось символов: 
+                  <span data-textarea-counter-target="counter">500</span>
+                </small>
               </div>
+
             </div>
-            <%= f.submit "Отправить", 
-                        class: "btn-primary mt-4 px-8" %>
+
+            <%= f.submit "Отправить", class: "btn-primary mt-4 px-8" %>
           <% end %>
         </div>
       <% end %>
