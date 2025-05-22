@@ -73,3 +73,9 @@ gem "image_processing"
 gem "mini_magick"
 
 gem "rspec-rails", "~> 7.1", :groups => [:development, :test]
+gem "factory_bot_rails", :groups => [:development, :test]
+gem "test-prof", :groups => [:development, :test]
+gem "faker", "~> 3.5", :groups => [:development, :test]
+gem "rails-controller-testing", :groups => [:development, :test]
+gem "database_cleaner",  :groups => [:development, :test]
+gem "shoulda-matchers", :groups => [:development, :test]

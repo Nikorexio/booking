@@ -1,7 +1,6 @@
 # Pin npm packages by running ./bin/importmap
 
 pin "application"
-pin "pagy", to: "pagy.js", preload: true
 pin "@stripe/stripe-js", to: "https://cdn.jsdelivr.net/npm/@stripe/stripe-js/+esm"
 pin "@hotwired/turbo-rails", to: "turbo.min.js"
 pin "flatpickr", to: "flatpickr.js"

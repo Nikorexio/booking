@@ -65,8 +65,34 @@
                       class: "block text-sm font-medium text-gray-700" %>
             <%= f.date_field :check_out, 
                       class: "input-field",
-                      value: params[:check_in].nil? ? Date.tomorrow : (Date.parse(params[:check_in]) + 1) || params[:check_out],
-                      min: params[:check_in].nil? ? Date.tomorrow : (Date.parse(params[:check_in]) + 1),
+                      value: begin
+                        check_in_val = params[:check_in].presence
+                        check_out_val = params[:check_out].presence
+
+                        if check_in_val
+                          begin
+                            (Date.parse(check_in_val) + 1).to_s
+                          rescue Date::Error
+                            check_out_val || Date.tomorrow.to_s
+                          end
+                        elsif check_out_val
+                          check_out_val
+                        else
+                          Date.tomorrow.to_s
+                        end
+                      end,
+                      min: begin 
+                        check_in_val = params[:check_in].presence
+                        if check_in_val
+                          begin
+                            (Date.parse(check_in_val) + 1).to_s
+                          rescue Date::Error
+                              Date.tomorrow.to_s 
+                          end
+                        else
+                          Date.tomorrow.to_s
+                        end
+                      end,
                       data: { datepicker_target: "endDate" } %>
           </div>
         </div>
