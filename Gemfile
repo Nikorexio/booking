@@ -72,7 +72,7 @@ gem "flatpickr"
 gem "image_processing"
 gem "mini_magick"
 
-gem "rspec-rails", "~> 7.1", :groups => [:development, :test]
+gem "rspec-rails", "~> 8.0", :groups => [:development, :test]
 gem "factory_bot_rails", :groups => [:development, :test]
 gem "test-prof", :groups => [:development, :test]
 gem "faker", "~> 3.5", :groups => [:development, :test]
